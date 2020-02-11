@@ -30,11 +30,10 @@ public class SimpleAuthorRepository implements AuthorRepository {
         } else {
             Author[] newAuthorsArray = new Author[authorsLength + 1];
             System.arraycopy(authors, 0, newAuthorsArray, 0, authorsLength);
-            newAuthorsArray[authorsLength + 1] = author;
+            newAuthorsArray[authorsLength] = author;
             authors = newAuthorsArray;
             return true;
         }
-
     }
 
     /**
@@ -82,11 +81,6 @@ public class SimpleAuthorRepository implements AuthorRepository {
             Author[] newAuthorsArray = new Author[authorsLength - 1];
             System.arraycopy(authors, 0, newAuthorsArray, 0, positionToDelete);
             System.arraycopy(authors, positionToDelete + 1, newAuthorsArray, positionToDelete, authorsLength - positionToDelete - 1);
-/*            int newArrayCounter = 0;
-            for (int i = 0; i < authorsLength; i++) {
-                if (i == positionToDelete) continue;
-                newAuthorsArray[newArrayCounter++] = authors[i];
-            }*/
             authors = newAuthorsArray;
             return true;
         } else return false;

@@ -3,7 +3,12 @@ package com.epam.izh.rd.online.repository;
 import com.epam.izh.rd.online.entity.Book;
 import com.epam.izh.rd.online.entity.SchoolBook;
 
+import java.util.Arrays;
+
 public class SimpleSchoolBookRepository implements BookRepository<SchoolBook> {
+
+    private SchoolBook[] schoolBooks = new SchoolBook[]{};
+
     /**
      * Метод должен сохранять школьную книгу в массив schoolBooks.
      * Массив при каждом сохранении должен увеличиваться в размере ровно на 1.
@@ -17,7 +22,17 @@ public class SimpleSchoolBookRepository implements BookRepository<SchoolBook> {
      */
     @Override
     public boolean save(SchoolBook book) {
-        return false;
+        int booksLength = count();
+        SchoolBook[] newSchoolBooks = new SchoolBook[booksLength + 1];
+        System.arraycopy(schoolBooks, 0, newSchoolBooks, 0, booksLength);
+        newSchoolBooks[booksLength] = book;
+        schoolBooks = newSchoolBooks;
+
+        if (count() - booksLength == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -30,7 +45,15 @@ public class SimpleSchoolBookRepository implements BookRepository<SchoolBook> {
      */
     @Override
     public SchoolBook[] findByName(String name) {
-        return new SchoolBook[0];
+        int booksLength = count();
+        SchoolBook[] resultArray = new SchoolBook[booksLength];
+        int foundCounter = 0;
+        for (int i = 0; i < booksLength; i++) {
+            if (schoolBooks[i].getName() == name) {
+                resultArray[foundCounter++] = schoolBooks[i];
+            }
+        }
+        return Arrays.copyOf(resultArray, foundCounter);
     }
 
     /**
@@ -48,7 +71,22 @@ public class SimpleSchoolBookRepository implements BookRepository<SchoolBook> {
      */
     @Override
     public boolean removeByName(String name) {
-        return false;
+        int booksLength = count();
+        SchoolBook[] newSchoolBooks = new SchoolBook[booksLength];
+        int counter = 0;
+        for (int i = 0; i < booksLength; i++) {
+            String bookName = schoolBooks[i].getName();
+            boolean areNamesEqual = bookName == name;
+            if (!areNamesEqual) {
+                newSchoolBooks[counter++] = schoolBooks[i];
+            }
+        }
+        if (counter != booksLength) {
+            schoolBooks = Arrays.copyOf(newSchoolBooks, counter);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -56,6 +94,6 @@ public class SimpleSchoolBookRepository implements BookRepository<SchoolBook> {
      */
     @Override
     public int count() {
-        return 0;
+        return schoolBooks.length;
     }
 }
