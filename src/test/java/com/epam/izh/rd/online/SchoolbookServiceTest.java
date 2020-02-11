@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SchoolbookServiceTest {
-
     @ParameterizedTest
     @MethodSource("com.epam.izh.rd.online.Providers#testFieldNameAndType")
     @DisplayName("Проверка корректности полей для сущностей Book, SchoolBook, Author")
